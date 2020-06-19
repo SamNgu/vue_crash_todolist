@@ -1,47 +1,19 @@
 <template>
-  <div id="app">
-    <AddTodo v-on:add-todo="addTodo" />
-    <Todos v-bind:todos="todos" v-on:del-todo="deleteTodo" />
+  <div id="app" class="widget">
+    <TimerDisplay />
+    <ControlPanel />
   </div>
 </template>
 
 <script>
-import Todos from '../components/Todos';
-import AddTodo from '../components/AddTodo';
-import axios from 'axios';
+import TimerDisplay from '../components/TimerDisplay';
+import ControlPanel from '../components/ControlPanel';
 
 export default {
   name: 'Home',
   components: {
-    Todos,
-    AddTodo
-  },
-  data() {
-    return {
-      todos: []
-    }
-  },
-  methods: {
-    deleteTodo(id) {
-      axios.delete(`https://jsonplaceholder.typicode.com/todos/${id}`)
-        .then(res => this.todos = this.todos.filter(todo => todo.id !== id))
-        .catch(err => console.log(err));
-    },
-    addTodo(newTodo) {
-      const { title, completed } = newTodo;
-
-      axios.post('https://jsonplaceholder.typicode.com/todos', {
-        title,
-        completed
-      })
-        .then(res => this.todos = [...this.todos, res.data])
-        .catch(err => console.log(err));
-    }
-  },
-  created() {
-    axios.get('https://jsonplaceholder.typicode.com/todos?_limit=5')
-      .then(res => this.todos = res.data)
-      .catch(err => console.log(err));
+    TimerDisplay,
+    ControlPanel
   }
 }
 </script>
@@ -51,6 +23,15 @@ export default {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+  }
+
+  .widget {
+    max-width: 960px;
+    margin: auto;
+    margin-top:10px;
+    padding: 10px;
+    border-style: solid;
+    border-color: #ccc;
   }
 
   body {
